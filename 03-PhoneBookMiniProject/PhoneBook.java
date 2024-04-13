@@ -1,76 +1,58 @@
-import java.util.*;
-import java.time.*;
-import java.time.format.DateTimeFormatter;
-
-class Address {
-    String zipCode, country, city;
-
-    public Address(String zipCode, String country, String city) {
-        this.zipCode = zipCode;
-        this.country = country;
-        this.city = city;
-    }
-
-    public String toString() {
-        return zipCode + country + city;
-    }
-}
-
-class PhoneNumber {
-    String countryCode, number;
-
-    public PhoneNumber(String country, String number) {
-        this.countryCode = countryCode;
-        this.number = number;
-    }
-
-    public String toString() {
-        return countryCode + number;
-    }
-}
-
-class Contact {
-    String group, email, firstName, lastName;
-    PhoneNumber phoneNumber;
-    Address address;
-
-    public Contact(String group, String email, String firstName, String lastName, PhoneNumber phoneNumber, Address address) {
-        this.group = group;
-        this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.phoneNumber = phoneNumber;
-        this.address = address;
-    }
-}
+import java.util.ArrayList;
+import java.util.List;
 
 public class PhoneBook {
-    
-    ArrayList<Contact> contacts;
-    int contactCount;
+    private List<Contact> contacts;
 
-    public boolean contactExists(Contact contact) {
-        return contacts.contains(contact);
+    public PhoneBook() {
+        this.contacts = new ArrayList<>();
     }
 
-    boolean addContact(Contact contact) {
-        if(contactExists(contact)) return false;
+    public boolean addContact(Contact contact) {
+        for (Contact c : contacts) {
+            if (c.getFirstName().equals(contact.getFirstName()) && c.getLastName().equals(contact.getLastName())) {
+                return false;
+            }
+        }
         contacts.add(contact);
         return true;
     }
 
-    boolean deleteContact(String firstName, String lastName)
-
-    Contact[] findContact(String inputStr)
-
-    Contact[] findContacts(String searchType)
-
-    void printContacts()
-
-    parser
-
-    public static void main(String[] args) {
-        return;
+    public boolean deleteContact(String firstName, String lastName) {
+        return contacts.removeIf(contact -> contact.getFirstName().equals(firstName) && contact.getLastName().equals(lastName));
     }
 
+    public Contact findContact(String firstName, String lastName) {
+        for (Contact contact : contacts) {
+            if (contact.getFirstName().equals(firstName) && contact.getLastName().equals(lastName)) {
+                return contact;
+            }
+        }
+        return null;
+    }
+
+    public Contact[] findContacts(String group) {
+        List<Contact> groupContacts = new ArrayList<>();
+        for (Contact contact : contacts) {
+            if (contact.getGroup().equals(group)) {
+                groupContacts.add(contact);
+            }
+        }
+        if (groupContacts.isEmpty()) {
+            return null;
+        } else {
+            return groupContacts.toArray(new Contact[0]);
+        }
+    }
+
+
+    public void printContacts() {
+        for (Contact contact : contacts) {
+            System.out.println(contact);
+        }
+    }
+
+    public List<Contact> getContacts() {
+        return contacts;
+    }
 }
