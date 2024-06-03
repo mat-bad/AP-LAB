@@ -150,8 +150,11 @@ public class SudokuSolver {
     
     try {
       init();
+      getInput();
     } catch (RuntimeException e) {
-      return;
+      e.printStackTrace();
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
     }
     
     if(solve(board)) {
